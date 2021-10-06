@@ -1,0 +1,67 @@
+@import './vars';
+@import './datePicker';
+* {
+  box-sizing: border-box;
+  outline: none!important;
+}
+a {
+  color: $mainTextColor;
+  text-decoration: none!important;
+}
+a:hover {
+  color: $mainTextColor;
+}
+body {
+  margin: 0;
+  font-family: $font;
+  font-size: 14px;
+  color: $mainTextColor;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+h1 {
+  font-size: 2.8em;
+}
+h2 {
+  font-size: 2.5em;
+}
+
+h3 {
+  font-size: 2.3em;
+}
+
+h4 {
+  font-size: 2.1em;
+}
+
+h5 {
+  font-size: 1.8em;
+}
+
+h6 {
+  font-size: 1.5em;
+}
+
+.App {
+  background-color: $mainBgColor;
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 150px;
+  .container {
+    padding: 80px 20px 50px;
+    section {
+      width: 100%;
+      max-width: 660px;
+      margin: 0 auto;
+    }
+  }
+}
+
+.ReactModal__Content {
+  top: 100px!important;
+  left: 50%!important;
+  transform: translate(-50%, 0);
+}

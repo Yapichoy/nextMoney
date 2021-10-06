@@ -1,0 +1,43 @@
+@import '../../styles/vars';
+.footer{
+    width: 100%;
+    height: 80px;
+    padding-left: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    border-top: 2px solid $footerBorderColor;
+    p {
+        margin-bottom: 0;
+    }
+
+    &__tabs {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 500px;
+    }
+    &__tab {
+        font-size: 1.6em;
+        a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            p {
+                display: none;
+                font-size: 0.5em;
+            }
+            &.active {
+                color: $footerActiveColor;
+                p {
+                    display: block;
+                }
+            }
+        }      
+    }
+}
