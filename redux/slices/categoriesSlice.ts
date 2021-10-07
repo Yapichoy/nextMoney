@@ -1,14 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { CategoryType } from "../utils/types";
 
-
-export type CategoryState = {
-    id: number,
-    categoryName: string,
-    bgColor: string,
-    icon: any,
-    sum: number
-}
-const initialState: CategoryState[] = [
+const initialState: CategoryType[] = [
     {
         id: 1,
         categoryName: "Семья",
@@ -70,8 +63,7 @@ const categoriesSlice = createSlice({
     name: 'categories',
     initialState,
     reducers: {
-        addNewCategory: (state, action: PayloadAction<CategoryState | undefined>) => {
-            debugger
+        addNewCategory: (state, action: PayloadAction<CategoryType | undefined>) => {
             state.push({
                 id: 9,
                 categoryName: "Кафе",
@@ -79,10 +71,15 @@ const categoriesSlice = createSlice({
                 icon: "faUtensils",
                 sum: 400
             })
+        },
+        createPurchase: (state, action: PayloadAction<CategoryType>) => {
+            const index = state.findIndex((c: CategoryType) => c.id == action.payload.id);
+
+            state[index].sum += action.payload.sum
         }
     }
 })
 
-export const { addNewCategory } = categoriesSlice.actions;
+export const { addNewCategory, createPurchase } = categoriesSlice.actions;
 
 export const categoriesReducer = categoriesSlice.reducer;
