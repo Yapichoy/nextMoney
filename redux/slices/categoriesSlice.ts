@@ -64,13 +64,8 @@ const categoriesSlice = createSlice({
     initialState,
     reducers: {
         addNewCategory: (state, action: PayloadAction<CategoryType | undefined>) => {
-            state.push({
-                id: 9,
-                categoryName: "Кафе",
-                bgColor: "#3023b9c0",
-                icon: "faUtensils",
-                sum: 400
-            })
+            // @ts-ignore
+            state.push(action.payload)
         },
         createPurchase: (state, action: PayloadAction<CategoryType>) => {
             const index = state.findIndex((c: CategoryType) => c.id == action.payload.id);
