@@ -4,9 +4,9 @@ import { CategoryType, PieChartType } from '../../redux/utils/types';
 
 const PieChart:React.FC<PieChartType> = ({width, height, data, fontSize}) => {
     const parsePurchaseData = () => {
-      return data.filter((p:CategoryType) => p.sum > 0).map((p:CategoryType, index:number) => ({x: index+1, y: p.sum, color: p.bgColor}))
+      return data.filter((p:CategoryType) => +p.sum > 0).map((p:CategoryType, index:number) => ({x: index+1, y: +p.sum, color: p.color}))
     } 
-    const getPurchasesSum = () => data.reduce((p: number, c: CategoryType) => p += c.sum, 0);
+    const getPurchasesSum = () => data.reduce((p: number, c: CategoryType) => p += Number.parseFloat(String(c.sum ?? 0)), 0);
     return <svg viewBox="0 0 200 200" style={{width: width+'px', height: height+"px"}}>
             <VictoryPie
               standalone={false}

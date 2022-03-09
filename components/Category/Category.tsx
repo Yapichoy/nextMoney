@@ -8,16 +8,17 @@ import DatePicker from '../DatePicker';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { styled } from '@mui/material/styles';
-import { CategoryType } from '../../redux/utils/types';
+import {CategoryType, OperationType} from '../../redux/utils/types';
 import { useDispatch } from 'react-redux';
-import { createPurchase } from '../../redux/slices/categoriesSlice';
+import {addNewOperation, createPurchase} from '../../redux/slices/categoriesSlice';
 import { decrement } from '../../redux/slices/billSlice';
+import {useAsyncAction} from "../../hooks/useAction";
 
-const Category:React.FC<CategoryType> = ({id, icon, bgColor, categoryName, sum}) => {
+const Category:React.FC<CategoryType> = ({id, logo, color, categoryName, sum, refreshData}) => {
     let [isOpen, setOpen] = useState(false);
     let refSum = useRef();
     const dispatch = useDispatch();
-
+    const createOperation = useAsyncAction<OperationType, void>(addNewOperation);
     const openModal = (e: BaseSyntheticEvent) => {
       setOpen(true);
     }
@@ -26,17 +27,18 @@ const Category:React.FC<CategoryType> = ({id, icon, bgColor, categoryName, sum})
       setOpen(false);
     }
 
-    const addPurchase = (e:BaseSyntheticEvent) => {
-        dispatch(createPurchase({id, sum: +refSum.current.value}));
+    const addPurchase = async (e:BaseSyntheticEvent) => {
+        await createOperation({categoryId: id, sum: +refSum.current.value})
         dispatch(decrement(+refSum.current.value))
         setOpen(false);
+        refreshData();
     }
 
     const ColorButton = styled(Button)(() => ({
-      backgroundColor: bgColor,
+      backgroundColor: color,
       boxShadow: "0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)",
       '&:hover': {
-        background: bgColor,
+        background: color,
         boxShadow: 
           "0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%)"
       },
@@ -47,11 +49,11 @@ const Category:React.FC<CategoryType> = ({id, icon, bgColor, categoryName, sum})
         <div className={styles.categoryLabel}>
           {categoryName}
         </div>
-        <div className={styles.categoryIcon} style={{backgroundColor: bgColor}}>
-          <FontAwesomeIcon icon={Icons[icon]} />
+        <div className={styles.categoryIcon} style={{backgroundColor: color}}>
+          <FontAwesomeIcon icon={Icons[logo]} />
         </div>
-        <div className={styles.categorySum} style={{color: sum > 0 ? bgColor : '#9e9e9e'}}>
-          {sum} руб.
+        <div className={styles.categorySum} style={{color: sum > 0 ? color : '#9e9e9e'}}>
+          {sum ?? 0} руб.
         </div>
         
       </div>
@@ -67,13 +69,13 @@ const Category:React.FC<CategoryType> = ({id, icon, bgColor, categoryName, sum})
                 }
             }}
         >
-             <div className={styles.modalHeader} style={{backgroundColor: bgColor }}>
+             <div className={styles.modalHeader} style={{backgroundColor: color }}>
                 <div>
                   <small>На категорию</small>
                   <p>{categoryName}</p>
                 </div>
-                <div className={styles.iconCircle} style={{color: bgColor}}>
-                  <FontAwesomeIcon icon={Icons[icon]} />
+                <div className={styles.iconCircle} style={{color: color}}>
+                  <FontAwesomeIcon icon={Icons[logo]} />
                </div>
              </div>
              <div className={styles.modalBody}>

@@ -5,14 +5,20 @@ export type BillType = {
 export type CategoryType = {
     id: number,
     categoryName: string,
-    bgColor: string,
-    icon: any,
-    sum: number
+    color: string,
+    logo: any,
+    sum: number,
+    refreshData?: any
 }
 
 export type PieChartType = {
     width: number,
     height: number,
-    data: CategoryType,
+    data: CategoryType[],
     fontSize: number
+}
+
+export type OperationType = {
+    categoryId: number,
+    sum: number
 }
