@@ -1,13 +1,9 @@
-export type BillType = {
-    bill: number
-}
-
 export type CategoryType = {
-    id: number,
+    id?: number,
     categoryName: string,
     color: string,
     logo: any,
-    sum: number,
+    sum?: number,
     refreshData?: any
 }
 
@@ -19,6 +15,12 @@ export type PieChartType = {
 }
 
 export type OperationType = {
-    categoryId: number,
-    sum: number
+    categoryId: number | undefined,
+    sum: number,
+    operationDate?: Date
+}
+
+export type AccountType = {
+    id: number,
+    bill: number
 }

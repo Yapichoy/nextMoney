@@ -1,20 +1,36 @@
 import axios from 'axios';
-import {OperationType} from "../redux/utils/types";
+import {AccountType, CategoryType, OperationType} from "../redux/utils/types";
 
 const instance = axios.create({
     baseURL: 'http://localhost:3001/',
 })
 
 export const CategoryApi = {
-    async getAllWithSum() : Promise<any>{
-        const { data } = await instance.get<any, {data: any}>('/category/getAllWithSum');
+    async getAllWithSum() : Promise<CategoryType[]>{
+        const { data } = await instance.get<any, {data: CategoryType[]}>('/category/getAllWithSum');
         return data;
     },
+    async add(category: CategoryType): Promise<CategoryType>{
+        const { data } = await instance.post<any, {data: CategoryType}>('/category', category);
+        console.log(data);
+        return data;
+    }
 }
 
 export const OperationApi = {
-    async add(operation: OperationType): Promise<any> {
+    async add(operation: OperationType): Promise<void> {
         await instance.post('/operation/add', operation);
-        return true;
     }
+}
+
+export const AccountApi = {
+    async get(): Promise<AccountType> {
+        const { data } = await instance.get<any, {data: AccountType}>('/account/get');
+        return data;
+    },
+    async decrement(value: number): Promise<number> {
+        const { data } = await instance.post<any, any>('/account/decrement', {value});
+        return data;
+    }
+
 }

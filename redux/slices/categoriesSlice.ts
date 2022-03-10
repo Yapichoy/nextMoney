@@ -9,15 +9,6 @@ const categoriesSlice = createSlice({
     name: 'categories',
     initialState,
     reducers: {
-        addNewCategory: (state, action: PayloadAction<CategoryType | undefined>) => {
-            // @ts-ignore
-            state.push(action.payload)
-        },
-        createPurchase: (state, action: PayloadAction<CategoryType>) => {
-            const index = state.findIndex((c: CategoryType) => c.id == action.payload.id);
-
-            state[index].sum += action.payload.sum
-        }
     },
     extraReducers: builder => {}
 })
@@ -36,15 +27,26 @@ export const fetchCourses = createAsyncThunk<CategoryType[]>(
 
 export const addNewOperation = createAsyncThunk<void, OperationType>(
     'operation/add',
-    async ({categoryId, sum}: OperationType) => {
+    async ({categoryId, sum, operationDate}: OperationType) => {
         try {
-            await OperationApi.add({categoryId, sum});
+            await OperationApi.add({categoryId, sum, operationDate});
         } catch (error) {
             throw Error('Ошибка');
         }
     },
 );
 
-export const { addNewCategory, createPurchase } = categoriesSlice.actions;
+export const addNewCategory = createAsyncThunk<void, CategoryType>(
+    'category/add',
+    async (category: CategoryType) => {
+        try {
+            await CategoryApi.add(category);
+        } catch (error) {
+            throw Error('Ошибка');
+        }
+    },
+);
+
+export const { } = categoriesSlice.actions;
 
 export const categoriesReducer = categoriesSlice.reducer;

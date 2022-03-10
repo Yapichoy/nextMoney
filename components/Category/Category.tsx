@@ -9,16 +9,16 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { styled } from '@mui/material/styles';
 import {CategoryType, OperationType} from '../../redux/utils/types';
-import { useDispatch } from 'react-redux';
-import {addNewOperation, createPurchase} from '../../redux/slices/categoriesSlice';
-import { decrement } from '../../redux/slices/billSlice';
+import {addNewOperation} from '../../redux/slices/categoriesSlice';
 import {useAsyncAction} from "../../hooks/useAction";
+import {decrementBill} from "../../redux/slices/billSlice";
 
 const Category:React.FC<CategoryType> = ({id, logo, color, categoryName, sum, refreshData}) => {
     let [isOpen, setOpen] = useState(false);
     let refSum = useRef();
-    const dispatch = useDispatch();
+    const [selectedDate, setSelectedDate] = useState(new Date());
     const createOperation = useAsyncAction<OperationType, void>(addNewOperation);
+    const decrement = useAsyncAction<number, void>(decrementBill);
     const openModal = (e: BaseSyntheticEvent) => {
       setOpen(true);
     }
@@ -28,8 +28,9 @@ const Category:React.FC<CategoryType> = ({id, logo, color, categoryName, sum, re
     }
 
     const addPurchase = async (e:BaseSyntheticEvent) => {
-        await createOperation({categoryId: id, sum: +refSum.current.value})
-        dispatch(decrement(+refSum.current.value))
+        console.log(selectedDate);
+        await createOperation({categoryId: id, sum: +refSum.current.value, operationDate: selectedDate})
+        await decrement(+refSum.current.value);
         setOpen(false);
         refreshData();
     }
@@ -80,7 +81,7 @@ const Category:React.FC<CategoryType> = ({id, logo, color, categoryName, sum, re
              </div>
              <div className={styles.modalBody}>
                 <div className={styles.pickerContainer}>
-                  <DatePicker/>
+                  <DatePicker dateCallback={setSelectedDate}/>
                 </div>
                 <div className={styles.purchaseSum}>
                   <TextField inputRef={refSum} label="Сумма покупки" variant="outlined" type="number"/>

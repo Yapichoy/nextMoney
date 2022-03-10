@@ -6,7 +6,7 @@ import {MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns';
 
 interface DatePickerProps {
-  
+  dateCallback: any
 }
 class RuLocalizedUtils extends DateFnsUtils {
   getCalendarHeaderText(date: Date) {
@@ -18,10 +18,10 @@ class RuLocalizedUtils extends DateFnsUtils {
   }
 }
 
-const DatePicker:React.FC<DatePickerProps> = () => {
+const DatePicker:React.FC<DatePickerProps> = ( { dateCallback } ) => {
   const handleDateChange = (date:any) => {
-    console.log(date);
     setSelectedDate(date);
+    dateCallback(date);
   };
   const [selectedDate, setSelectedDate] = useState(new Date());
     return <div className="datePicker">

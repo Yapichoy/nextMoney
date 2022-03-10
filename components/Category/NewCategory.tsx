@@ -5,11 +5,13 @@ import Button from "@material-ui/core/Button";
 import React, {BaseSyntheticEvent, useRef, useState} from "react";
 import {styled} from "@mui/material/styles";
 import {SketchPicker} from "react-color";
-import {useDispatch} from "react-redux";
 import {addNewCategory} from "../../redux/slices/categoriesSlice";
+import {useAsyncAction} from "../../hooks/useAction";
+import {CategoryType} from "../../redux/utils/types";
 
-const NewCategory = () => {
-    const dispatch = useDispatch();
+// @ts-ignore
+const NewCategory = ({refreshData}) => {
+    const createNewCategory = useAsyncAction<CategoryType, void>(addNewCategory);
     let [isOpen, setOpen] = useState(false);
     let [color, setColor] = useState('blue');
     let refCategoryName = useRef();
@@ -35,15 +37,13 @@ const NewCategory = () => {
     const saveCategory = () => {
         // @ts-ignore
         const categoryName = refCategoryName.current.value;
-        const icon = "faFile";
-        dispatch(addNewCategory({
-            id: 9,
+        const logo = "faFile";
+        createNewCategory({
             categoryName,
-            bgColor: color,
-            icon,
-            sum: 0
-        }
-        ));
+            color: color,
+            logo,
+        });
+        refreshData()
         setOpen(false);
     }
     return <>
