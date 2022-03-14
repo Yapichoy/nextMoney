@@ -10,8 +10,8 @@ import {useAsyncAction} from "../../hooks/useAction";
 import {CategoryType} from "../../redux/utils/types";
 
 // @ts-ignore
-const NewCategory = ({refreshData}) => {
-    const createNewCategory = useAsyncAction<CategoryType, void>(addNewCategory);
+const NewCategory = ({period}) => {
+    const createNewCategory = useAsyncAction<CategoryType, any, void>(addNewCategory);
     let [isOpen, setOpen] = useState(false);
     let [color, setColor] = useState('blue');
     let refCategoryName = useRef();
@@ -42,8 +42,8 @@ const NewCategory = ({refreshData}) => {
             categoryName,
             color: color,
             logo,
+            period
         });
-        refreshData()
         setOpen(false);
     }
     return <>

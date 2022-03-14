@@ -1,16 +1,26 @@
-import type { NextPage } from 'next'
+import type {GetServerSideProps, NextPage} from 'next'
 import Category from '../components/Category/Category';
 import NewCategory from '../components/Category/NewCategory';
 import PieChart from '../components/PieChart'
 import styles from '../styles/Home.module.scss'
-import { CategoryType } from '../redux/utils/types';
+import {AccountType, CategoryType} from '../redux/utils/types';
 import {CategoryApi} from "../api";
 import {useRouter} from "next/router";
+import {wrapper} from "../redux";
+import {useSelector} from "react-redux";
+import {useEffect, useState} from "react";
+import {useAsyncAction} from "../hooks/useAction";
+import {fetchCategories} from "../redux/slices/categoriesSlice";
 
 //@ts-ignore
-const Home: NextPage = ({categories}) => {
+const Home: NextPage = () => {
   const router = useRouter();
-
+  let categories = useSelector(state => state.categories.categories);
+  let period = useSelector(state => state.period)
+  const getCourses = useAsyncAction<void, CategoryType[]>(fetchCategories);
+  useEffect(()=> {
+    getCourses(period);
+  }, [period]);
   const refreshData = () => {
     router.replace(router.asPath);
   }
@@ -18,9 +28,9 @@ const Home: NextPage = ({categories}) => {
     <div className="container">
       <section>
         <div className={styles.categories}>
-          {categories.map((c: CategoryType) => <Category id={c.id} categoryName={c.categoryName} color={c.color} logo={c.logo} sum={c.sum} refreshData={refreshData} key={c.id}/>)}
+          {categories.map((c: CategoryType) => <Category id={c.id} categoryName={c.categoryName} color={c.color} logo={c.logo} sum={c.sum} period={period} key={c.id}/>)}
           
-          <div ><NewCategory refreshData={refreshData}/></div>
+          <div ><NewCategory period={period}/></div>
         </div>
         <div className={styles.chartSection}>
           <PieChart data={categories} width={300} height={300}  fontSize={16}/>
@@ -32,16 +42,17 @@ const Home: NextPage = ({categories}) => {
 }
 
 export default Home
-
-export const getServerSideProps = async () => {
+//@ts-ignore
+/*
+export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async (ctx) => {
   try {
-    const categories = await CategoryApi.getAllWithSum();
+    const state = store.getState();
+    const categories = await CategoryApi.getAllWithSum(state.period);
     return {
       props: { categories }
 
     }
   } catch (error){
-    console.error(error);
     return {
       props: {
         categories: [
@@ -106,4 +117,4 @@ export const getServerSideProps = async () => {
     }
   }
 
-}
+})*/

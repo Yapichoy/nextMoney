@@ -8,6 +8,10 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "browserslist": [
+    "defaults",
+    "ie >= 9"
+  ],
   "dependencies": {
     "@date-io/date-fns": "1",
     "@emotion/react": "^11.4.1",

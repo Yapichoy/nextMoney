@@ -1,3 +1,4 @@
+@import "../../styles/vars";
 .dateRangeContainer{
   width: 100%;
   display: flex;
@@ -6,5 +7,23 @@
 }
 
 .dateRange {
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 300px;
+  background: $headerGradient;
+  padding: 10px 0;
+  border-radius: 0 0 10px 10px;
+  .period {
+    color: #fff;
+    width: 60%;
+    text-align: center;
+    font-size: 1.2em;
+  }
+  .arrow {
+    color: #fff;
+    font-size: 1.5em;
+    cursor: pointer;
+  }
 }

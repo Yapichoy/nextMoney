@@ -6,8 +6,8 @@ const instance = axios.create({
 })
 
 export const CategoryApi = {
-    async getAllWithSum() : Promise<CategoryType[]>{
-        const { data } = await instance.get<any, {data: CategoryType[]}>('/category/getAllWithSum');
+    async getAllWithSum(period: any) : Promise<CategoryType[]>{
+        const { data } = await instance.post<any, {data: CategoryType[]}>('/category/getAllWithSum', period);
         return data;
     },
     async add(category: CategoryType): Promise<CategoryType>{

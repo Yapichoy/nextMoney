@@ -13,7 +13,7 @@ import {addNewOperation} from '../../redux/slices/categoriesSlice';
 import {useAsyncAction} from "../../hooks/useAction";
 import {decrementBill} from "../../redux/slices/billSlice";
 
-const Category:React.FC<CategoryType> = ({id, logo, color, categoryName, sum, refreshData}) => {
+const Category:React.FC<CategoryType> = ({id, logo, color, categoryName, sum, period}) => {
     let [isOpen, setOpen] = useState(false);
     let refSum = useRef();
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -28,11 +28,9 @@ const Category:React.FC<CategoryType> = ({id, logo, color, categoryName, sum, re
     }
 
     const addPurchase = async (e:BaseSyntheticEvent) => {
-        console.log(selectedDate);
-        await createOperation({categoryId: id, sum: +refSum.current.value, operationDate: selectedDate})
+        await createOperation({categoryId: id, sum: +refSum.current.value, operationDate: selectedDate, period})
         await decrement(+refSum.current.value);
         setOpen(false);
-        refreshData();
     }
 
     const ColorButton = styled(Button)(() => ({
