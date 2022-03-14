@@ -5,6 +5,7 @@ export type CategoryType = {
     logo: any,
     sum?: number,
     refreshData?: any
+    period?: any
 }
 
 export type PieChartType = {
@@ -17,7 +18,8 @@ export type PieChartType = {
 export type OperationType = {
     categoryId: number | undefined,
     sum: number,
-    operationDate?: Date
+    operationDate?: Date,
+    period?: any
 }
 
 export type AccountType = {
